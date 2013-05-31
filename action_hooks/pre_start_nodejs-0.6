@@ -17,6 +17,9 @@
 #  Source utility functions.
 source "$OPENSHIFT_REPO_DIR/.openshift/lib/utils"
 
+# Set home to where pump config can be found
+export HOME=${OPENSHIFT_DATA_DIR}
+
 #  Setup path to include the custom Node[.js] version.
 ver=$(get_node_version)
 echo ""
