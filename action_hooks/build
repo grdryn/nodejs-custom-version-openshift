@@ -27,6 +27,22 @@ fi
 if [ -f "${OPENSHIFT_REPO_DIR}"/package.json ]; then
    echo "  - Installing dependencies w/ new version of npm ... "
    echo
-   (cd "${OPENSHIFT_REPO_DIR}"; export TMPDIR="/tmp"; npm install -d)
+
+   export TMPDIR="/tmp"
+   pushd ${OPENSHIFT_REPO_DIR}
+   HOME=${OPENSHIFT_DATA_DIR} npm install
+
+   # Also install databank-mongodb and forever, not in package.json
+   if [ ! -d node_modules/databank-mongodb/ ]; then
+       HOME=${OPENSHIFT_DATA_DIR} npm install databank-mongodb
+   fi
+   popd
 fi
 
+# Generate config file for openshift if it doesn't already exist
+${OPENSHIFT_REPO_DIR}/.openshift/lib/gen_openshift_pump_config.js
+
+# Make uploaddir if it doesn't exist already
+if [ ! -d ${OPENSHIFT_DATA_DIR}/uploads/ ]; then
+    mkdir ${OPENSHIFT_DATA_DIR}/uploads/
+fi
