@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # Set home to where generated pump config can be found
-export HOME=${OPENSHIFT_DATA_DIR}
+HOME=${OPENSHIFT_DATA_DIR} npm start
